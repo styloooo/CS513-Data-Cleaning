@@ -14,4 +14,8 @@ REQUIRED_NLTK_PACKAGES = {
     'corpora/stopwords': 'stopwords'
 }
 
-DEBUG = False
+# Debug
+DEBUG = True
+
+# Test configs
+TEST_DATA_DIR = path.join(getcwd(), 'test_data')

@@ -168,3 +168,10 @@ cython_debug/
 # Generated data files 
 data/review_words.csv
 data/words.csv
+
+# Test data dir
+test_data
+test_data/*
+
+extract_helper.gv
+yw-graph.sh
