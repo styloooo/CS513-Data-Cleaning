@@ -17,3 +17,5 @@ python extract.py
 ```
 
 Source data files are stored in the `data` directory. Output data files are written to the same directory.
+
+Note: Extraction may take a long time due to the size of the source dataset.
