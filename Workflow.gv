@@ -1,0 +1,49 @@
+digraph Workflow {
+rankdir=TB
+fontname=Courier; fontsize=18; labelloc=t
+label=extract_text
+subgraph cluster_workflow_box_outer { label=""; color=black; penwidth=2
+subgraph cluster_workflow_box_inner { label=""; color=white
+node[shape=box style=filled fillcolor="#CCFFCC" peripheries=1 fontname=Courier]
+read_csv [shape=record rankdir=LR label="{<f0> read_csv |<f1> Read input wine review data from CSV.}"];
+map_description_to_freqs [shape=record rankdir=LR label="{<f0> map_description_to_freqs |<f1> Map each review ID to the (stemmed) word count of each wine description, filtering out stopwords.}"];
+generate_word_ids [shape=record rankdir=LR label="{<f0> generate_word_ids |<f1> Generates an ID for each distinct word that appears in a wine's description.}"];
+write_word_id_rows_to_csv [shape=record rankdir=LR label="{<f0> write_word_id_rows_to_csv |<f1> Flattens and writes word_id_map to CSV.}"];
+write_review_words_rows_to_csv [shape=record rankdir=LR label="{<f0> write_review_words_rows_to_csv |<f1> Flattens and writes the data contained in id_freqs to CSV,}"];
+node[shape=box style="rounded,filled" fillcolor="#FFFFCC" peripheries=1 fontname=Helvetica]
+input_file_path
+node[shape=box style="rounded,filled" fillcolor="#FCFCFC" peripheries=1 fontname=Helvetica]
+rows
+row_ids_mapped_to_word_frequencies
+words_output_file_path
+word_id_map
+review_words_output_file_path
+read_csv -> rows
+input_file_path -> read_csv
+map_description_to_freqs -> row_ids_mapped_to_word_frequencies
+rows -> map_description_to_freqs
+generate_word_ids -> word_id_map
+row_ids_mapped_to_word_frequencies -> generate_word_ids
+write_word_id_rows_to_csv -> word_id_csv
+words_output_file_path -> write_word_id_rows_to_csv
+word_id_map -> write_word_id_rows_to_csv
+write_review_words_rows_to_csv -> review_words_csv
+row_ids_mapped_to_word_frequencies -> write_review_words_rows_to_csv
+review_words_output_file_path -> write_review_words_rows_to_csv
+review_words_rows -> write_review_words_rows_to_csv
+}}
+subgraph cluster_input_ports_group_outer { label=""; color=white
+subgraph cluster_input_ports_group_inner { label=""; color=white
+node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica width=0.2]
+input_file_path_input_port [label=""]
+words_output_file_path_input_port [label=""]
+review_words_output_file_path_input_port [label=""]
+}}
+subgraph cluster_output_ports_group_outer { label=""; color=white
+subgraph cluster_output_ports_group_inner { label=""; color=white
+node[shape=circle style="rounded,filled" fillcolor="#FFFFFF" peripheries=1 fontname=Helvetica width=0.2]
+}}
+input_file_path_input_port -> input_file_path
+words_output_file_path_input_port -> words_output_file_path
+review_words_output_file_path_input_port -> review_words_output_file_path
+}

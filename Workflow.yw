@@ -1,0 +1,114 @@
+@BEGIN extract_text
+@PARAM input_file_path
+@PARAM words_output_file_path
+@PARAM review_words_output_file_path
+@IN wine_review_data @AS wine_review_data @URI file:{input_file_path}
+@OUT words @AS words_normalized @URI file:{words_output_file_path}
+@OUT review_words @AS review_words_intermediate_table @URI file:{review_words_output_file_path}
+Extracts description from CSV
+Maps distinct word sets to row ID
+Normalizes words and assigns ID
+Passes results to be written to CSV
+Parameters
+---
+filePath : str
+file path to data source
+@BEGIN read_csv
+@DESC Read input wine review data from CSV.
+@IN input_file_path @URI file:{input_file_path}
+@OUT rows
+@END read_csv
+@BEGIN map_description_to_freqs
+@DESC Map each review ID to the (stemmed) word count of each wine description, filtering out stopwords.
+@PARAM rows
+@OUT id_freqs @AS row_ids_mapped_to_word_frequencies
+@END map_description_to_freqs
+@BEGIN generate_word_ids
+@DESC Generates an ID for each distinct word that appears in a wine's description.
+@PARAM row_ids_mapped_to_word_frequencies
+@OUT word_id_map
+@END generate_word_ids
+@BEGIN write_word_id_rows_to_csv
+@DESC Flattens and writes word_id_map to CSV.
+@PARAM words_output_file_path
+@PARAM word_id_map
+@OUT word_id_csv @URI file:{words_output_file_path}
+@END write_word_id_rows_to_csv
+@BEGIN write_review_words_rows_to_csv
+@DESC Flattens and writes the data contained in id_freqs to CSV,
+serving as an intermediary table between the original reviews
+table and the normalized words table.
+@PARAM row_ids_mapped_to_word_frequencies
+@PARAM review_words_output_file_path
+@PARAM review_words_rows
+@OUT review_words_csv @URI file:{review_words_output_file_path}
+@END write_review_words_rows_to_csv
+@END extract_text
+@BEGIN read_csv
+@PARAM filePath
+@IN csv @URI file:{filePath}
+@OUT rows @AS csv_rows
+Read CSV on disk
+Parameters
+----
+filePath : str
+path to data source on disk
+Returns
+----
+list[list[str, str]]
+A list of lists each containing a row ID and
+corresponding description text
+skip header
+@END read_csv
+@BEGIN write_csv
+@PARAM filePath
+@PARAM rows
+@OUT csv @AS output_csv @URI file:{filePath}
+@END write_csv
+@BEGIN stem
+@PARAM word
+@OUT stemmer.stem(word) @AS stemmed_word
+Stems a single word using the NLTK's Snowball Stemmer
+Parameters
+---
+word : str
+text to stem
+Returns
+---
+str
+Stemmed text
+@END stem
+@BEGIN is_alpha
+@PARAM word
+@OUT validation.issubset(allowed_chars) @AS does_word_include_only_alphabetical_characters
+Determines whether a word contains non-alphabetic characters
+Parameters
+---
+word : str
+String of word to check for non-alphabetic characters
+Returns
+---
+bool
+True if word only consists of alphabetic characters
+return word.isalpha()
+@END is_alpha
+@BEGIN is_stopword
+@PARAM word
+@OUT word in stopwords.words('english') @AS is_word_stopword
+Determines whether a word is a stopword based on NLTK's stopword corpus
+Parameters
+---
+word : str
+String of word to check whether it is a stopword
+Returns
+---
+bool
+True if word is stopword
+@END is_stopword
+@BEGIN map_description_to_freqs
+@PARAM description
+@OUT freqs @AS word_frequency_map
+Maps words from in source descriptions to frequencies of their (stemmed) occurrence
+Discards stopwords and words with non-alphabetic characters
+this string contains non-alphabetic characters or is a stopword so we discard
+@END map_description_to_freqs
