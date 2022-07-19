@@ -15,7 +15,7 @@ REQUIRED_NLTK_PACKAGES = {
 }
 
 # Debug
-DEBUG = True
+DEBUG = False
 
 # Test configs
 TEST_DATA_DIR = path.join(getcwd(), 'test_data')
