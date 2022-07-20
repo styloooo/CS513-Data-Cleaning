@@ -1,5 +1,6 @@
 import os
 import shutil
+import logging
 from utils import (DATA_FILE_PATH, DATA_FILE_NAME,
                    WORDS_FILE_NAME, WORDS_FILE_PATH,
                    REVIEW_WORDS_FILE_NAME, REVIEW_WORDS_FILE_PATH)
@@ -30,6 +31,7 @@ DATA_FILE_PATHS = {
 }
 
 def main():
+    logger = logging.getLogger('package')
     if not os.path.exists(OUTPUT_DIR):
         os.mkdir(OUTPUT_DIR)
     else:
@@ -47,6 +49,9 @@ def main():
         shutil.copy(path, output_path)
 
     for path, fileName in DATA_FILE_PATHS.items():
+        if not os.path.exists(fileName):
+            logger.warning(f"Source file {path} not found.")
+            continue
         output_path = os.path.join(OUTPUT_DATA_DIR, fileName)
         shutil.copy(path, output_path)
 
