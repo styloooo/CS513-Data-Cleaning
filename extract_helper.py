@@ -268,7 +268,7 @@ def map_description_to_freqs(description: str) -> dict[str: int]:
     """
     logger = getLogger('extract_helper:map_description_to_freqs')
     
-    description = description.replace('.', '').strip().split()
+    description = description.replace('.', '').replace('-', ' ').strip().split()
     freqs = {}
 
     for word in description:
