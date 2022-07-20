@@ -175,3 +175,5 @@ test_data/*
 
 extract_helper.gv
 yw-graph.sh
+
+text-extract-packaged/*
