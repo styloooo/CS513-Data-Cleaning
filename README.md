@@ -13,11 +13,10 @@ pip install -r requirements.txt
 ```
 
 2. Run the script:
-
 ```sh
 python extract.py
 ```
+Source data files are stored in the `data` directory. Output data files are written to the same directory. Text extraction may take a long time due to the size of the source dataset.
 
-Source data files are stored in the `data` directory. Output data files are written to the same directory.
-
-Note: Extraction may take a long time due to the size of the source dataset.
+3. For project submission: Extract relevant files for submission by running
+`python package.py`. 

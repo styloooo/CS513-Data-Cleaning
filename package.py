@@ -49,7 +49,7 @@ def main():
         shutil.copy(path, output_path)
 
     for path, fileName in DATA_FILE_PATHS.items():
-        if not os.path.exists(fileName):
+        if not os.path.exists(path):
             logger.warning(f"Source file {path} not found.")
             continue
         output_path = os.path.join(OUTPUT_DATA_DIR, fileName)
