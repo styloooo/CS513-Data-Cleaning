@@ -20,3 +20,15 @@ Source data files are stored in the `data` directory. Output data files are writ
 
 3. For project submission: Extract relevant files for submission by running
 `python package.py`. 
+
+
+## Data
+Within the `./data` directory there will be at most three files. If the script has not ran to completion, only the raw source data `winemag-data-130k-v2.csv` will be in the directory. 
+
+After the script has ran to completion, two other CSV files will have been saved alongside the source data:
+* `words.csv`
+    * This is the normalized table for words extracted from wine reviews. Each unique word appearing in the source data appears in this table exactly once.
+* `review_words.csv`
+    * This is the intermediary table linking the normalized words table with the source data. Each row consists of three values: a row ID from the source data, a word ID from the normalized words table, and a frequency indicating how many times a word was used within a given review.
+
+The benefit of this data structure is its flexibility. For example, we can now either use the intermediary table to analyze the frequencies of words appearing within a single review or we can aggregate the words in the normalized `words` table to find which words are most common across the entire dataset.
